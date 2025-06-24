@@ -17,38 +17,38 @@ func NewLinkService(link_repository repositories.LinkRepository) interfaces.Link
 	return &LinkService{linkRepository: link_repository}
 }
 
-func (l *LinkService) CreateNewLink(command *command.CreateLinkCommand) (*command.CreateLinkCommandResult, error) {
+func (l *LinkService) CreateNewLink(link_command *command.CreateLinkCommand) (*command.CreateLinkCommandResult, error) {
 	// business logic required cause we need to move this to entities to make it shorter
-	if command == nil {
+	if link_command == nil {
 		return nil, fmt.Errorf("command is required")
 	}
 
-	entity := mapper.ToEntityLong(command)
+	entity := mapper.ToEntityLong(link_command)
 
 	short, err := l.linkRepository.Create(entity)
 	if err != nil {
 		return nil, err
 	}
 
-	res := command.CreateLinkCommandResult{Result: &common.LinkResult{Short: short, Long: command.Long}}
+	res := command.CreateLinkCommandResult{Result: &common.LinkResult{Short: short, Long: link_command.Long}}
 
 	return &res, nil
 }
 
-func (l *LinkService) GetLink(command *command.GetLinkCommand) (*command.GetLinkCommmandResult, error) {
+func (l *LinkService) GetLink(link_command *command.GetLinkCommand) (*command.GetLinkCommmandResult, error) {
 	// thing to find Long link from short link, no business logic required
-	if command == nil {
+	if link_command == nil {
 		return nil, fmt.Errorf("command is required")
 	}
 
-	entity := mapper.ToEntityShort(command)
+	entity := mapper.ToEntityShort(link_command)
 
 	long, err := l.linkRepository.Get(entity)
 	if err != nil {
 		return nil, err
 	}
 
-	res := command.GetLinkCommmandResult{Result: &common.LinkResult{Short: command.Short, Long: long}}
+	res := command.GetLinkCommmandResult{Result: &common.LinkResult{Short: link_command.Short, Long: long}}
 
 	return &res, nil
 }

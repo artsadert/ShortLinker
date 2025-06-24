@@ -9,5 +9,6 @@ func NewConnection() *redis.Client {
 		Addr:     "localhost:6379",
 		Password: "", // TODO add password
 		DB:       0,
+		Protocol: 2,
 	})
 }
